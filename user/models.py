@@ -8,7 +8,7 @@ from django.utils import timezone
 
 # Create your models here.
 class CustomerProfile(models.Model):
-    customerID = models.UUIDField(primary_key=True, default=uuid.uuid5, editable=False)
+    customerID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customerName = models.CharField(default="New User", max_length=50)
     customerEmail = models.EmailField(blank=True)
     customerAddress = models.CharField(blank=True, max_length=200)
