@@ -30,6 +30,16 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTHENTICATION_METHODS = {'phone'}
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `django-phone-auth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `django-phone-auth` specific authentication methods, such as login by phone/email/username.
+    'phone_auth.backend.CustomAuthBackend',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'user.apps.UserConfig'
+    'user.apps.UserConfig',
+    'phone_auth'
 ]
 
 MIDDLEWARE = [
