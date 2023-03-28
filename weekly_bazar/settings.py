@@ -32,13 +32,13 @@ ALLOWED_HOSTS = []
 
 AUTHENTICATION_METHODS = {'phone'}
 
-AUTHENTICATION_BACKENDS = [
-    # Needed to login by username in Django admin, regardless of `django-phone-auth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `django-phone-auth` specific authentication methods, such as login by phone/email/username.
-    'phone_auth.backend.CustomAuthBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     # Needed to login by username in Django admin, regardless of `django-phone-auth`
+#     'django.contrib.auth.backends.ModelBackend',
+#
+#     # `django-phone-auth` specific authentication methods, such as login by phone/email/username.
+#     'phone_auth.backend.CustomAuthBackend',
+# ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'user.apps.UserConfig',
-    'phone_auth'
+    # 'phone_auth'
 ]
 
 MIDDLEWARE = [
@@ -118,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
