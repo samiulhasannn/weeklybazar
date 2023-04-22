@@ -20,5 +20,6 @@ from user import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('phone_auth.urls')),
-    path('login/', user_views.login, name='login'),
+    path('login/', user_views.login_form, name='login'),
+    path('home/', user_views.homepage, name='homepage')
 ]

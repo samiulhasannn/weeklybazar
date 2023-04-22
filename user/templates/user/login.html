@@ -1,3 +1,4 @@
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 
 <!DOCTYPE html>
@@ -7,7 +8,7 @@
     <title>Login Page</title>
 </head>
 <body>
-    <form action="/templates/static" method="POST" enctype="multipart/form-data">
+    <form action="/" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
     </form>
