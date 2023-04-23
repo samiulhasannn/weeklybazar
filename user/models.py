@@ -12,7 +12,7 @@ class CustomerProfile(models.Model):
     customerName = models.CharField(default="New User", max_length=50)
     customerEmail = models.EmailField(blank=True)
     customerAddress = models.CharField(blank=True, max_length=200)
-    customerMobile = models.CharField(blank=True, max_length=10)
+    customerMobile = models.CharField(blank=True, max_length=11)
     customerImage = models.ImageField(blank=True)
     customerAccountCreationDate = models.DateField(default=timezone.now)
 

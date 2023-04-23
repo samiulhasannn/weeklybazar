@@ -5,13 +5,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login Page</title>
+    <title>Enter OTP</title>
 </head>
 <body>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST">
         {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" value="Submit">
+        <label for="otp">OTP:</label>
+        <input type="text" name="otp" required>
+        <input type="submit" value="otp">
     </form>
 </body>
 </html>

@@ -16,10 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from user import views as user_views
+from django.contrib.auth import views as auth_views
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('phone_auth.urls')),
-    path('login/', user_views.login_form, name='login'),
-    path('home/', user_views.homepage, name='homepage')
+    path('', user_views.homepage, name='homepage'),
+    path('login/', user_views.login_page, name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
+    path('home/', auth_views.LoginView.as_view(template_name='user/welcome.html'), name='home'),
+    path('otp/', user_views.otp_view, name='otp'),
 ]
