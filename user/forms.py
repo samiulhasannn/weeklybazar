@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomerProfile
+from .models import CustomerProfile, Item
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -22,3 +22,10 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomerProfile
         fields = ['customerName', 'customerEmail', 'customerAddress', 'customerImage']
+
+
+class ItemForm(forms.ModelForm):
+
+    class Meta:
+        model = Item
+        fields = ['itemName', 'itemType', 'itemPrice', 'itemQuantity', 'itemDescription', 'itemImage']
