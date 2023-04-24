@@ -1,3 +1,5 @@
+{%  load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +7,21 @@
     <title>Homepage</title>
 </head>
 <body>
-
+    <div>
+        {% block showItems %}
+            <h2>Available Items</h2>
+            <hr>
+            <hr>
+            {% for item in  items %}
+                <img src="{{ item.itemImage.url }}" alt="">
+                <p><strong>Item Name:</strong> {{ item.itemName }}</p>
+                <p><strong>Item Type:</strong> {{ item.itemType }}</p>
+                <p><strong>Item Price:</strong> {{ item.itemPrice }}</p>
+                <p><strong>Item in Stock:</strong> {{ item.itemQuantity }}</p>
+                <p><strong>Item Description:</strong> {{ item.itemDescription }}</p>
+                <hr>
+            {% endfor %}
+        {% endblock showItems %}
+    </div>
 </body>
 </html>

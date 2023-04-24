@@ -39,7 +39,7 @@ class Item(models.Model):
     itemPrice = models.DecimalField(max_digits=10, decimal_places=2)
     itemQuantity = models.PositiveIntegerField(default=0)
     itemDescription = models.TextField()
-    itemImage = models.ImageField(blank=True, default='profile_pics/default.jpg', upload_to='profile_pics')
+    itemImage = models.ImageField(blank=True, default='item_pics/default_item.jpg', upload_to='item_pics')
 
     def __str__(self):
         return f"{self.itemName}"

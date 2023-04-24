@@ -24,8 +24,8 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ['customerName', 'customerEmail', 'customerAddress', 'customerImage']
 
 
-class ItemForm(forms.ModelForm):
-
-    class Meta:
-        model = Item
-        fields = ['itemName', 'itemType', 'itemPrice', 'itemQuantity', 'itemDescription', 'itemImage']
+# class ItemForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Item
+#         fields = ['itemName', 'itemType', 'itemPrice', 'itemQuantity', 'itemDescription', 'itemImage']

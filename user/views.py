@@ -7,13 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .utils import send_otp
 from datetime import datetime
-from .models import CustomerProfile
+from .models import CustomerProfile, Item
 from .forms import ProfileUpdateForm
 from django.contrib import messages
 
 
 def homepage(request):
-    return render(request, 'user/homepage.html')
+    items = Item.objects.all()
+    return render(request, 'user/homepage.html', {'items': items})
 
 
 # Create your views here.
@@ -83,15 +84,15 @@ def logout_view(request):
     logout(request)
 
 
-def profile_view(request):
-    if request.method == "POST":
-        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.customerprofile)
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect("homepage")
-    else:
-        form = ProfileUpdateForm(instance=request.user.customerprofile)
-
-    return render(request, 'user/profile.html', {'form': form})
+# def profile_view(request):
+#     if request.method == "POST":
+#         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.customerprofile)
+#
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, f'Your account has been updated!')
+#             return redirect("homepage")
+#     else:
+#         form = ProfileUpdateForm(instance=request.user.customerprofile)
+#
+#     return render(request, 'user/profile.html', {'form': form})
