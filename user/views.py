@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from .utils import send_otp
 from datetime import datetime
+from .models import CustomerProfile
 
 
 def homepage(request):
@@ -30,6 +31,7 @@ def login_page(request):
             except User.DoesNotExist:
                 user = User.objects.create_user(username=mobile_number, password='none')
                 user.save()
+                CustomerProfile.objects.create(user=user)
                 user = authenticate(request, username=mobile_number, password='none')
                 send_otp(request)
                 return redirect('otp')
