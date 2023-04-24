@@ -8,11 +8,13 @@
     <title>Enter OTP</title>
 </head>
 <body>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="otp">OTP:</label>
-        <input type="text" name="otp" required>
-        <input type="submit" value="otp">
-    </form>
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="otp">OTP:</label>
+            <input type="text" name="otp" required>
+            <input type="submit" value="otp">
+        </form>
+    </div>
 </body>
 </html>

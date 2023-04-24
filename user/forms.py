@@ -15,3 +15,10 @@ class LoginForm(UserCreationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         del self.fields['password1']
         del self.fields['password2']
+
+
+class ProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = CustomerProfile
+        fields = ['customerName', 'customerEmail', 'customerAddress', 'customerImage']

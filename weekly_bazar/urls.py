@@ -23,8 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('phone_auth.urls')),
     path('', user_views.homepage, name='homepage'),
-    path('login/', user_views.login_page, name='login'),
+    path('login/', user_views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
-    path('home/', auth_views.LoginView.as_view(template_name='user/welcome.html'), name='home'),
+    path('home/', auth_views.LoginView.as_view(template_name='user/homepage.html'), name='home'),
     path('otp/', user_views.otp_view, name='otp'),
+    path('profile/', user_views.profile_view, name='profile'),
 ]

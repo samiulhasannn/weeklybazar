@@ -5,10 +5,11 @@ from .forms import LoginForm
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
 from .utils import send_otp
 from datetime import datetime
 from .models import CustomerProfile
+from .forms import ProfileUpdateForm
+from django.contrib import messages
 
 
 def homepage(request):
@@ -16,7 +17,7 @@ def homepage(request):
 
 
 # Create your views here.
-def login_page(request):
+def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -64,7 +65,7 @@ def otp_view(request):
                     del request.session['otp_secret_key']
                     del request.session['otp_valid_date']
 
-                    return redirect('home')
+                    return redirect('homepage')
                 else:
                     print("OTP is wrong")
                     return redirect('login')
@@ -80,3 +81,17 @@ def otp_view(request):
 
 def logout_view(request):
     logout(request)
+
+
+def profile_view(request):
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.customerprofile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect("homepage")
+    else:
+        form = ProfileUpdateForm(instance=request.user.customerprofile)
+
+    return render(request, 'user/profile.html', {'form': form})
