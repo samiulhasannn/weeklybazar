@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
     <div>
@@ -18,10 +19,20 @@
                 <p><strong>Item Type:</strong> {{ item.itemType }}</p>
                 <p><strong>Item Price:</strong> {{ item.itemPrice }}</p>
                 <p><strong>Item in Stock:</strong> {{ item.itemQuantity }}</p>
-                <p><strong>Item Description:</strong> {{ item.itemDescription }}</p>
+                <p><strong>Item Description:</strong></p>
+                <p>{{ item.itemDescription|linebreaks }}</p>
+                <button id="{{ item.itemID }}" class="button">Add to Cart</button>
                 <hr>
             {% endfor %}
         {% endblock showItems %}
     </div>
 </body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("button").click(function(event) {
+            console.log(event.target.id);
+            location.href = "http://127.0.0.1:8000/cart/?product=" + event.target.id;
+        });
+    });
+</script>
 </html>

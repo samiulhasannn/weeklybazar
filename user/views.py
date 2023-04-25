@@ -84,15 +84,20 @@ def logout_view(request):
     logout(request)
 
 
-# def profile_view(request):
-#     if request.method == "POST":
-#         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.customerprofile)
-#
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, f'Your account has been updated!')
-#             return redirect("homepage")
-#     else:
-#         form = ProfileUpdateForm(instance=request.user.customerprofile)
-#
-#     return render(request, 'user/profile.html', {'form': form})
+def profile_view(request):
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.customerprofile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect("homepage")
+    else:
+        form = ProfileUpdateForm(instance=request.user.customerprofile)
+
+    return render(request, 'user/profile.html', {'form': form})
+
+
+def cart_view(request):
+    product_id = request.GET.get('product')
+    return render(request, 'user/cart.html', {"product_id": product_id})
