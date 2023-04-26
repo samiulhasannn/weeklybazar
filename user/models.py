@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from django.utils import timezone
 from PIL import Image
+import math
 
 
 # Create your models here.
@@ -43,3 +44,28 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.itemName}"
+
+
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Item, blank=True)
+    deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    totalPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def setTotalPrice(self):
+        total = self.totalPrice
+        for item in self.items.all():
+            total += item.itemPrice
+        self.totalPrice = total
+
+    def setDeliveryCharge(self):
+        self.deliveryCharge = math.floor(float(self.totalPrice) * 0.02)
+
+    def __str__(self):
+        return f"{self.user.customerprofile.customerName}'s Cart"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        self.setTotalPrice()
+        self.setDeliveryCharge()

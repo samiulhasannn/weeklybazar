@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .utils import send_otp
 from datetime import datetime
-from .models import CustomerProfile, Item
+from .models import CustomerProfile, Item, Cart
 from .forms import ProfileUpdateForm
 from django.contrib import messages
 
@@ -33,7 +33,10 @@ def login_view(request):
             except User.DoesNotExist:
                 user = User.objects.create_user(username=mobile_number, password='none')
                 user.save()
+
                 CustomerProfile.objects.create(user=user)
+                Cart.objects.create(user=user)
+
                 user = authenticate(request, username=mobile_number, password='none')
                 send_otp(request)
                 return redirect('otp')
@@ -100,4 +103,12 @@ def profile_view(request):
 
 def cart_view(request):
     product_id = request.GET.get('product')
-    return render(request, 'user/cart.html', {"product_id": product_id})
+    user = request.user
+
+    try:
+        user.cart.items.add(Item.objects.get(itemID=product_id))
+    except Item.DoesNotExist:
+        pass
+
+    user.cart.save()
+    return render(request, 'user/cart.html', {'user': user})
