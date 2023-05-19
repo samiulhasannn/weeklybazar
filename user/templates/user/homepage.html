@@ -6,9 +6,20 @@
     <meta charset="UTF-8">
     <title>Homepage</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+     <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
     <div>
+        <h1 class="bodyalign">WeeklyBazar</h1>
+
+    </div>
+    <div class="homepagealign">
+     <a href="http://127.0.0.1:8000/cart">Cart</a>
+             <a href="http://127.0.0.1:8000/login">Login</a>
+
+
+    </div>
+    <div class="bodyalign">
         {% block showItems %}
             <h2>Available Items</h2>
             <hr>
@@ -25,6 +36,8 @@
                 <hr>
             {% endfor %}
         {% endblock showItems %}
+
+
     </div>
 </body>
 <script type="text/javascript">

@@ -50,7 +50,9 @@ INSTALLED_APPS = [
 
     'user.apps.UserConfig',
     # 'phone_auth'
-    'crispy_forms'
+    'crispy_forms',
+    'crispy_bootstrap4'
+
 ]
 
 MIDDLEWARE = [
@@ -131,8 +133,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "templates/static",
+    BASE_DIR ,"static"
 ]
+
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
