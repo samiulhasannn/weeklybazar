@@ -23,9 +23,9 @@ def login_view(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             # form.save()
-            mobile_number = form.cleaned_data.get('mobile_number')[4:]
+            mobile_number = form.cleaned_data.get('mobile_number')
 
-            if mobile_number.isnumeric():
+            if mobile_number.isnumeric() and len(mobile_number) == 11:
                 request.session['username'] = mobile_number
                 try:
                     user = User.objects.get(username=mobile_number)
