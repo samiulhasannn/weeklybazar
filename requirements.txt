@@ -6,7 +6,7 @@ backcall==0.2.0
 beautifulsoup4==4.10.0
 bleach==4.1.0
 Brotli==1.0.9
-certifi @ file:///C:/b/abs_85o_6fm0se/croot/certifi_1671487778835/work/certifi
+certifi
 cffi==1.15.0
 commonmark==0.9.1
 debugpy==1.5.1
