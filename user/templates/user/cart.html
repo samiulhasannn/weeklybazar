@@ -2,15 +2,71 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/style.css"/>
     <title>Title</title>
 </head>
 <body>
-    {% block cart %}
+<section id="cart-container" class="container">
+    <table width="100%">
+        <thead>
+            <tr>
+                <td>Item Name</td>
+                <td>Item Price</td>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                   {% block cart %}
+        {% for item in user.cart.items.all %}
+
+            <h1>{{ item.itemName }}</h1>
+
+                    {% endfor %}
+        <br><br<br>
+         <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
+        <h1><strong>Total Price: </strong>{{ user.cart.totalPrice }}</h1>
+
+
+
+
+
+    {% endblock cart %}
+
+
+                </td>
+                 <td>{% for item in user.cart.items.all %}
+                    <h1>{{ item.itemPrice }}</h1>
+                    {% endfor %}</td>
+
+
+
+
+            </tr>
+
+
+        </tbody>
+        <tbody>
+
+
+    </table>
+
+
+
+</section>
+
+  {% comment %} <!--{% block cart %}
         {% for item in user.cart.items.all %}
             <h1>{{ item.itemName }}</h1>
-        {% endfor %}
-        <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
+        #{% endfor %}
+
+
+         <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
         <h1><strong>Total Price: </strong>{{ user.cart.totalPrice }}</h1>
-    {% endblock cart %}
+   # {% endblock cart %}
+-->
+ {% endcomment %}
 </body>
 </html>

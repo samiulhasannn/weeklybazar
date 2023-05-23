@@ -6,3 +6,31 @@ background-color:yellow;
 .bodyalign{
     text-align:center;
 }
+
+/* Cart */
+#cart-container table{
+    border-collapse:collapse;
+    width:100%;
+    table-layout:fixed;
+
+}
+#cart-container table thead{
+    font-weight: 200;
+}
+#cart-container table thead td{
+    background: #fd8c66;
+    color: #fff;
+    border:none;
+}
+.container{
+
+background-color:yellow;
+ font-size: 20px;
+ text-align:right;
+}
+.logincss{
+    font-size:40px;
+    text-align:center;
+    background-color:orange;
+
+}
