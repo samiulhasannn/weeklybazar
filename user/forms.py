@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class LoginForm(UserCreationForm):
-    mobile_number = forms.CharField(max_length=20, required=True)
+    mobile_number = forms.CharField(max_length=11, required=True)
 
     class Meta:
         model = User

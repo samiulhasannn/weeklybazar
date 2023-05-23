@@ -24,22 +24,28 @@ def login_view(request):
         if form.is_valid():
             # form.save()
             mobile_number = form.cleaned_data.get('mobile_number')
-            request.session['username'] = mobile_number
-            try:
-                user = User.objects.get(username=mobile_number)
-                user = authenticate(request, username=mobile_number)
-                send_otp(request)
-                return redirect('otp')
-            except User.DoesNotExist:
-                user = User.objects.create_user(username=mobile_number, password='none')
-                user.save()
 
-                CustomerProfile.objects.create(user=user)
-                Cart.objects.create(user=user)
+            if mobile_number.isnumeric() and len(mobile_number) == 11:
+                request.session['username'] = mobile_number
+                try:
+                    user = User.objects.get(username=mobile_number)
+                    user = authenticate(request, username=mobile_number)
+                    send_otp(request)
+                    return redirect('otp')
+                except User.DoesNotExist:
+                    user = User.objects.create_user(username=mobile_number, password='none')
+                    user.save()
 
-                user = authenticate(request, username=mobile_number, password='none')
-                send_otp(request)
-                return redirect('otp')
+                    CustomerProfile.objects.create(user=user)
+                    Cart.objects.create(user=user)
+
+                    user = authenticate(request, username=mobile_number, password='none')
+                    send_otp(request)
+                    return redirect('otp')
+            else:
+                form = LoginForm()
+                return render(request, 'user/login.html', {'form': form})
+
     else:
         form = LoginForm()
 
