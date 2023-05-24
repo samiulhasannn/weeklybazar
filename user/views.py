@@ -89,10 +89,12 @@ def otp_view(request):
     return render(request, 'user/otp.html', {})
 
 
+@login_required
 def logout_view(request):
     logout(request)
 
 
+@login_required
 def profile_view(request):
     if request.method == "POST":
         form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.customerprofile)
@@ -107,6 +109,7 @@ def profile_view(request):
     return render(request, 'user/profile.html', {'form': form})
 
 
+@login_required
 def cart_view(request):
     product_id = request.GET.get('product')
     user = request.user
@@ -118,3 +121,9 @@ def cart_view(request):
 
     user.cart.save()
     return render(request, 'user/cart.html', {'user': user})
+
+
+@login_required
+def clear_cart(request):
+    request.user.cart.items.clear()
+    return render(request, 'user/cart.html')

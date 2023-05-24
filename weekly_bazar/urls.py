@@ -24,12 +24,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('accounts/', include('phone_auth.urls')),
     path('', user_views.homepage, name='homepage'),
-    path('login/', user_views.login_view, name='login'),
+    path('accounts/login/', user_views.login_view, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page=settings.LOGOUT_REDIRECT_URL), name='logout'),
     path('home/', auth_views.LoginView.as_view(template_name='user/homepage.html'), name='home'),
     path('otp/', user_views.otp_view, name='otp'),
     path('profile/', user_views.profile_view, name='profile'),
     re_path(r'cart/$', user_views.cart_view, name='cart'),
+    re_path(r'clear_cart/$', user_views.clear_cart, name='clear_cart'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
