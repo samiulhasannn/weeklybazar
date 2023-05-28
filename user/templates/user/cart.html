@@ -9,55 +9,40 @@
 <section id="cart-container" class="container">
     <table width="100%">
         <thead>
-            <tr>
-                <td>Item Name</td>
-                <td>Item Price</td>
-
-            </tr>
-
+        <tr>
+            <td>Item Name</td>
+            <td>Unit Quantity</td>
+            <td>Item Price</td>
+        </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                   {% block cart %}
-        {% for item in user.cart.items.all %}
+            {% for item in user.cart.items.all %}
+                <tr>
+                    <td>
+                        <h1>{{ item.itemName }}</h1>
+                    </td>
 
-            <h1>{{ item.itemName }}</h1>
+                    <td>
+                        <h1>{{ item.itemUnitQuantity }}</h1>
+                    </td>
 
-                    {% endfor %}
-        <br><br<br>
-         <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
-        <h1><strong>Total Price: </strong>{{ user.cart.totalPrice }}</h1>
-
-
-
-
-
-    {% endblock cart %}
-
-
-                </td>
-                 <td>{% for item in user.cart.items.all %}
-                    <h1>{{ item.itemPrice }}</h1>
-                    {% endfor %}</td>
-
-
-
-
-            </tr>
-
-
+                    <td>
+                        <h1>{{ item.itemPrice }}</h1>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
-        <tbody>
-
-
     </table>
-
-
-
 </section>
+<br><br><br>
+<h1><strong>Discount: </strong>0.00</h1>
+<h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
+<h1><strong>Total Price: </strong>{{ user.cart.totalPrice|add:user.cart.deliveryCharge }}</h1>
+
+<br><br><br>
 <a href="http://127.0.0.1:8000/clear_cart/">Clear Cart</a>
-  {% comment %} <!--{% block cart %}
+<a href="http://127.0.0.1:8000">Home</a>
+{% comment %} <!--{% block cart %}
         {% for item in user.cart.items.all %}
             <h1>{{ item.itemName }}</h1>
         #{% endfor %}

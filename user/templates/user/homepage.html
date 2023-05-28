@@ -11,14 +11,13 @@
 <body>
     <div>
         <h1 class="bodyalign">WeeklyBazar</h1>
-
     </div>
+
     <div class="homepagealign">
      <a href="http://127.0.0.1:8000/cart">Cart</a>
-             <a href="http://127.0.0.1:8000/accounts/login">Login</a>
-
-
+     <a href="http://127.0.0.1:8000/accounts/login">Login</a>
     </div>
+
     <div class="bodyalign">
         {% block showItems %}
             <h2>Available Items</h2>
@@ -28,6 +27,7 @@
                 <img src="{{ item.itemImage.url }}" alt="">
                 <p><strong>Item Name:</strong> {{ item.itemName }}</p>
                 <p><strong>Item Type:</strong> {{ item.itemType }}</p>
+                <p><strong>Item Unit Quantity:</strong> {{ item.itemUnitQuantity }}</p>
                 <p><strong>Item Price:</strong> {{ item.itemPrice }}</p>
                 <p><strong>Item in Stock:</strong> {{ item.itemQuantity }}</p>
                 <p><strong>Item Description:</strong></p>

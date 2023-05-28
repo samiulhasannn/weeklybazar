@@ -39,6 +39,7 @@ class Item(models.Model):
     itemType = models.CharField(default="", max_length=50)
     itemPrice = models.DecimalField(max_digits=10, decimal_places=2)
     itemQuantity = models.PositiveIntegerField(default=0)
+    itemUnitQuantity = models.CharField(max_length=100, default="Not Specified")
     itemDescription = models.TextField()
     itemImage = models.ImageField(blank=True, default='item_pics/default_item.jpg', upload_to='item_pics')
 
