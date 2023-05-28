@@ -127,3 +127,14 @@ def cart_view(request):
 def clear_cart(request):
     request.user.cart.items.clear()
     return render(request, 'user/cart.html')
+
+
+@login_required
+def remove_item(request):
+    product_id = request.GET.get('product')
+    user = request.user
+
+    user.cart.items.remove(Item.objects.get(itemID=product_id))
+    user.cart.save()
+
+    return render(request, 'user/cart.html')

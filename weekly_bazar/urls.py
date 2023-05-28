@@ -31,6 +31,7 @@ urlpatterns = [
     path('profile/', user_views.profile_view, name='profile'),
     re_path(r'cart/$', user_views.cart_view, name='cart'),
     re_path(r'clear_cart/$', user_views.clear_cart, name='clear_cart'),
+    re_path(r'remove_item/$', user_views.remove_item, name='remove_item'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

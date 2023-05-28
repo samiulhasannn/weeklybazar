@@ -1,18 +1,24 @@
+{% load tag %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/style.css"/>
     <title>Title</title>
 </head>
 <body>
+<form method="POST" id="quantity_form" enctype="multipart/form-data"></form>
 <section id="cart-container" class="container">
     <table width="100%">
         <thead>
         <tr>
             <td>Item Name</td>
             <td>Unit Quantity</td>
-            <td>Item Price</td>
+            <td>Unit Price</td>
+            <td>Item Count</td>
+            <td>Remove Item</td>
         </tr>
         </thead>
         <tbody>
@@ -28,6 +34,16 @@
 
                     <td>
                         <h1>{{ item.itemPrice }}</h1>
+                    </td>
+
+                    <td>
+                        <label>
+                            <input type="number" form="my_form" min="1" max="{{ item.itemQuantity }}" value="1"/>
+                        </label>
+                    </td>
+
+                    <td>
+                        <button class="button" name="delete" id="{{ item.itemID }}">Remove Item</button>
                     </td>
                 </tr>
             {% endfor %}
@@ -54,4 +70,16 @@
 -->
  {% endcomment %}
 </body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("button").click(function(event) {
+            console.log("Clicked0");
+            if (event.target.name === "delete") {
+                const id = event.target.id;
+                location.href = "http://127.0.0.1:8000/remove_item/?product=" + event.target.id;
+                console.log("Clicked");
+            }
+        });
+    });
+</script>
 </html>
