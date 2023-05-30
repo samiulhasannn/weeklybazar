@@ -24,29 +24,31 @@
         </tr>
         </thead>
         <tbody>
-            {% for item in user.cart.items.all %}
+            {% for quantified_item in user.cart.items.all %}
                 <tr>
                     <td>
-                        <h1>{{ item.itemName }}</h1>
+                        <h1>{{ quantified_item.item.itemName }}</h1>
                     </td>
 
                     <td>
-                        <h1>{{ item.itemUnitQuantity }}</h1>
+                        <h1>{{ quantified_item.item.itemUnitQuantity }}</h1>
                     </td>
 
                     <td>
-                        <h1>{{ item.itemPrice }}</h1>
+                        <h1>{{ quantified_item.item.itemPrice }}</h1>
                     </td>
 
                     <td>
                         <label>
-                            <input id="{{ item.itemID }}" name="submit" type="number" form="quantity_form" min="1" max="{{ item.itemQuantity }}" value="1"/>
-                            <input type="hidden" value="{{ item.itemID }}" name="item_id">
+                            <input id="{{ quantified_item.item.itemID }}" name="submit" type="number" form="quantity_form" min="1" max="{{ quantified_item.item.itemQuantity }}"
+                                   value="{{ quantified_item.quantity }}"/>
+                            <input type="hidden" value="{{ quantified_item.item.itemID }}" name="item_id">
                         </label>
                     </td>
 
                     <td>
-                        <button class="button" name="delete" id="{{ item.itemID }}">Remove Item</button>
+{#                        <button class="button" name="delete" id="{{ quantified_item.item.itemID }}">Remove Item</button>#}
+                        <a href="http://127.0.0.1:8000/remove_item/?product={{ quantified_item.item.itemID }}" class="disguised">Remove Item</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -59,7 +61,9 @@
 <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
 <h1><strong>Total Price: </strong>{{ user.cart.totalPrice|add:user.cart.deliveryCharge }}</h1>
 
+{#<input type="submit" form="quantity_form" name="action" value="Update Price">#}
 <input type="submit" form="quantity_form" name="action" value="Confirm Order">
+<input type="submit" form="quantity_form" name="action" value="Update Cart">
 
 <br><br><br>
 <a href="http://127.0.0.1:8000/clear_cart/">Clear Cart</a>
@@ -79,11 +83,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $("button").click(function(event) {
-            console.log("Clicked0");
             if (event.target.name === "delete") {
                 const id = event.target.id;
                 location.href = "http://127.0.0.1:8000/remove_item/?product=" + event.target.id;
-                console.log("Clicked");
             }
         });
     });

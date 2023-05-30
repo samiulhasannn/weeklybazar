@@ -2,7 +2,6 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import date
 from django.utils import timezone
 from PIL import Image
 import math
@@ -47,16 +46,21 @@ class Item(models.Model):
         return f"{self.itemName}"
 
 
+class QuantifiedItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    items = models.ManyToManyField(Item, blank=True)
+    items = models.ManyToManyField(QuantifiedItem, blank=True)
     deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     totalPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def setTotalPrice(self):
-        total = self.totalPrice
-        for item in self.items.all():
-            total += item.itemPrice
+        total = 0
+        for quantified_item in self.items.all():
+            total += (quantified_item.item.itemPrice * quantified_item.quantity)
         self.totalPrice = total
 
     def setDeliveryCharge(self):
@@ -70,11 +74,6 @@ class Cart(models.Model):
 
         self.setTotalPrice()
         self.setDeliveryCharge()
-
-
-class QuantifiedItem(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
 
 
 class Order(models.Model):

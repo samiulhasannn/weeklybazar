@@ -16,7 +16,8 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 def homepage(request):
     items = Item.objects.all()
-    return render(request, 'user/homepage.html', {'items': items})
+    user = request.user.is_authenticated
+    return render(request, 'user/homepage.html', {'items': items, 'user': user})
 
 
 # Create your views here.
@@ -115,7 +116,7 @@ def profile_view(request):
 def cart_view(request):
     if request.method == "GET":
         try:
-            if request.GET['action'] == 'submit_cart':
+            if request.GET['action'] == 'Confirm Order':
                 for key in request.GET:
                     if key == 'item_id':
                         item_ids = request.GET.getlist(key)
@@ -133,17 +134,40 @@ def cart_view(request):
                     order.items.add(QuantifiedItem.objects.filter(item=item, quantity=count).first())
                     order.save()
 
+                    item.itemQuantity -= int(count)
+                    item.save()
+
                 request.user.cart.items.clear()
                 print(order.__repr__())
                 return render(request, 'user/order_success.html', {"values": order.__dict__})
+            if request.GET['action'] == 'Update Cart':
+                for key in request.GET:
+                    if key == 'item_id':
+                        item_ids = request.GET.getlist(key)
+                    if key == 'submit':
+                        item_count = request.GET.getlist(key)
+
+                user = User.objects.get(username=request.user.username)
+
+                for item_id, count in zip(item_ids, item_count):
+                    item = Item.objects.get(itemID=item_id)
+                    quantified_item = user.cart.items.filter(item=item).first()
+                    quantified_item.quantity = count
+                    quantified_item.save()
+
+                print("Updated")
+
         except MultiValueDictKeyError:
             pass
 
-    product_id = request.GET.get('product')
     user = request.user
 
     try:
-        user.cart.items.add(Item.objects.get(itemID=product_id))
+        product_id = request.GET.get('product')
+        item = Item.objects.get(itemID=product_id)
+        quantified_item = QuantifiedItem(item=item, quantity=1)
+        quantified_item.save()
+        user.cart.items.add(QuantifiedItem.objects.filter(item=item, quantity=1).first())
     except Item.DoesNotExist:
         pass
 
@@ -162,7 +186,8 @@ def remove_item(request):
     product_id = request.GET.get('product')
     user = request.user
 
-    user.cart.items.remove(Item.objects.get(itemID=product_id))
+    item = Item.objects.get(itemID=product_id)
+    user.cart.items.remove(QuantifiedItem.objects.filter(item=item).first())
     user.cart.save()
 
     return render(request, 'user/cart.html')

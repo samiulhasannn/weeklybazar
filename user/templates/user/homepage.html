@@ -14,8 +14,15 @@
     </div>
 
     <div class="homepagealign">
-     <a href="http://127.0.0.1:8000/cart">Cart</a>
-     <a href="http://127.0.0.1:8000/accounts/login">Login</a>
+        {% if user %}
+            <a href="http://127.0.0.1:8000/profile">Profile</a>
+            <a href="http://127.0.0.1:8000/cart">Cart</a>
+            <a href="http://127.0.0.1:8000/logout">Logout</a>
+        {% else %}
+
+            <a href="http://127.0.0.1:8000/accounts/login">Login</a>
+        {% endif %}
+
     </div>
 
     <div class="bodyalign">
@@ -32,7 +39,11 @@
                 <p><strong>Item in Stock:</strong> {{ item.itemQuantity }}</p>
                 <p><strong>Item Description:</strong></p>
                 <p>{{ item.itemDescription|linebreaks }}</p>
-                <button id="{{ item.itemID }}" class="button" name="add-to-cart">Add to Cart</button>
+                {% if item.itemQuantity < 1 %}
+                    <button id="{{ item.itemID }}" class="button" name="add-to-cart" disabled>Out of stock</button>
+                {% else %}
+                    <button id="{{ item.itemID }}" class="button" name="add-to-cart">Add to Cart</button>
+                {% endif %}
                 <hr>
             {% endfor %}
         {% endblock showItems %}
