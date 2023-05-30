@@ -2,6 +2,7 @@ from django import forms
 from .models import CustomerProfile, Item
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import formset_factory
 
 
 class LoginForm(UserCreationForm):
@@ -29,3 +30,12 @@ class ProfileUpdateForm(forms.ModelForm):
 #     class Meta:
 #         model = Item
 #         fields = ['itemName', 'itemType', 'itemPrice', 'itemQuantity', 'itemDescription', 'itemImage']
+
+
+class OrderForm(forms.Form):
+    field = forms.IntegerField(min_value=1)
+
+
+OrderFormSet = formset_factory(OrderForm, extra=1)
+
+

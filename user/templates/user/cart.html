@@ -9,8 +9,10 @@
     <title>Title</title>
 </head>
 <body>
-<form method="POST" id="quantity_form" enctype="multipart/form-data"></form>
+
 <section id="cart-container" class="container">
+<form method="GET" id="quantity_form" enctype="multipart/form-data">
+    {% csrf_token %}
     <table width="100%">
         <thead>
         <tr>
@@ -38,7 +40,8 @@
 
                     <td>
                         <label>
-                            <input type="number" form="my_form" min="1" max="{{ item.itemQuantity }}" value="1"/>
+                            <input id="{{ item.itemID }}" name="submit" type="number" form="quantity_form" min="1" max="{{ item.itemQuantity }}" value="1"/>
+                            <input type="hidden" value="{{ item.itemID }}" name="item_id">
                         </label>
                     </td>
 
@@ -49,11 +52,14 @@
             {% endfor %}
         </tbody>
     </table>
+</form>
 </section>
 <br><br><br>
 <h1><strong>Discount: </strong>0.00</h1>
 <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
 <h1><strong>Total Price: </strong>{{ user.cart.totalPrice|add:user.cart.deliveryCharge }}</h1>
+
+<input type="submit" form="quantity_form" name="action" value="Confirm Order">
 
 <br><br><br>
 <a href="http://127.0.0.1:8000/clear_cart/">Clear Cart</a>

@@ -70,3 +70,34 @@ class Cart(models.Model):
 
         self.setTotalPrice()
         self.setDeliveryCharge()
+
+
+class QuantifiedItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    items = models.ManyToManyField(QuantifiedItem, blank=True)
+    date = models.DateTimeField(auto_now=True)
+    deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    totalPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def setTotalPrice(self):
+        total = self.totalPrice
+        for item in self.items.all():
+            total += (item.item.itemPrice * item.quantity)
+        self.totalPrice = total
+
+    def setDeliveryCharge(self):
+        self.deliveryCharge = math.floor(float(self.totalPrice) * 0.02)
+
+    def __str__(self):
+        return f"{self.user.customerprofile.customerName}'s Order for {self.date}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        self.setTotalPrice()
+        self.setDeliveryCharge()

@@ -1,15 +1,17 @@
 import pyotp
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
-from .forms import LoginForm
+from .forms import LoginForm, OrderFormSet
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .utils import send_otp
 from datetime import datetime
-from .models import CustomerProfile, Item, Cart
+from .models import CustomerProfile, Item, Cart, Order, QuantifiedItem
 from .forms import ProfileUpdateForm
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 def homepage(request):
@@ -111,6 +113,32 @@ def profile_view(request):
 
 @login_required
 def cart_view(request):
+    if request.method == "GET":
+        try:
+            if request.GET['action'] == 'submit_cart':
+                for key in request.GET:
+                    if key == 'item_id':
+                        item_ids = request.GET.getlist(key)
+                    if key == 'submit':
+                        item_count = request.GET.getlist(key)
+
+                user = User.objects.get(username=request.user.username)
+                order = Order(user=user)
+                order.save()
+                for item_id, count in zip(item_ids, item_count):
+                    item = Item.objects.get(itemID=item_id)
+                    quantified_item = QuantifiedItem(item=item, quantity=count)
+                    quantified_item.save()
+
+                    order.items.add(QuantifiedItem.objects.filter(item=item, quantity=count).first())
+                    order.save()
+
+                request.user.cart.items.clear()
+                print(order.__repr__())
+                return render(request, 'user/order_success.html', {"values": order.__dict__})
+        except MultiValueDictKeyError:
+            pass
+
     product_id = request.GET.get('product')
     user = request.user
 
