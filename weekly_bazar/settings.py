@@ -39,6 +39,8 @@ AUTHENTICATION_METHODS = {'phone'}
 # ]
 
 INSTALLED_APPS = [
+    'django_non_dark_admin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,3 +145,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = 'homepage'
+
+DISABLE_DARK_MODE = True
