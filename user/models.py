@@ -54,8 +54,10 @@ class QuantifiedItem(models.Model):
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     items = models.ManyToManyField(QuantifiedItem, blank=True)
-    deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     totalPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    netTotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def setTotalPrice(self):
         total = 0
@@ -63,8 +65,14 @@ class Cart(models.Model):
             total += (quantified_item.item.itemPrice * quantified_item.quantity)
         self.totalPrice = total
 
+    def setDiscount(self):
+        self.discount = math.ceil(float(self.totalPrice) * 0.1)
+
     def setDeliveryCharge(self):
         self.deliveryCharge = math.floor(float(self.totalPrice) * 0.02)
+
+    def setNetTotal(self):
+        self.netTotal = self.totalPrice + self.deliveryCharge - self.discount
 
     def __str__(self):
         return f"{self.user.customerprofile.customerName}'s Cart"
@@ -73,15 +81,20 @@ class Cart(models.Model):
         super().save(*args, **kwargs)
 
         self.setTotalPrice()
+        self.setDiscount()
         self.setDeliveryCharge()
+        self.setNetTotal()
 
 
 class Order(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     items = models.ManyToManyField(QuantifiedItem, blank=True)
     date = models.DateTimeField(auto_now=True)
-    deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     totalPrice = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    deliveryCharge = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    netTotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def setTotalPrice(self):
         total = self.totalPrice
@@ -89,8 +102,14 @@ class Order(models.Model):
             total += (item.item.itemPrice * item.quantity)
         self.totalPrice = total
 
+    def setDiscount(self):
+        self.discount = math.ceil(float(self.totalPrice) * 0.1)
+
     def setDeliveryCharge(self):
         self.deliveryCharge = math.floor(float(self.totalPrice) * 0.02)
+
+    def setNetTotal(self):
+        self.netTotal = self.totalPrice + self.deliveryCharge - self.discount
 
     def __str__(self):
         return f"{self.user.customerprofile.customerName}'s Order for {self.date}"
@@ -99,4 +118,6 @@ class Order(models.Model):
         super().save(*args, **kwargs)
 
         self.setTotalPrice()
+        self.setDiscount()
         self.setDeliveryCharge()
+        self.setNetTotal()

@@ -57,9 +57,10 @@
 </form>
 </section>
 <br><br><br>
-<h1><strong>Discount: </strong>0.00</h1>
+<h1><strong>Total Price: </strong>{{ user.cart.totalPrice }}</h1>
+<h1><strong>Discount: </strong>{{ user.cart.discount }}</h1>
 <h1><strong>Delivery Charge: </strong>{{ user.cart.deliveryCharge }}</h1>
-<h1><strong>Total Price: </strong>{{ user.cart.totalPrice|add:user.cart.deliveryCharge }}</h1>
+<h1><strong>Net Total: </strong>{{ user.cart.netTotal }}</h1>
 
 {#<input type="submit" form="quantity_form" name="action" value="Update Price">#}
 <input type="submit" form="quantity_form" name="action" value="Confirm Order">
